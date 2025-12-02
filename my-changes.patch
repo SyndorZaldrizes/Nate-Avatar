@@ -1,0 +1,2250 @@
+diff --git a/README.md b/README.md
+index de98c4ad0dd6c6aec66acd18afc4d07f7b7cd184..cf2529508809701e297740428b26efc8ce3bef1b 100644
+--- a/README.md
++++ b/README.md
+@@ -34,25 +34,27 @@ This is a **multi-page** static site.
+ ### Repo layout
+ 
+ ```text
+ /
+ ├─ index.html
+ ├─ assets/
+ │  ├─ css/
+ │  │  └─ site.css
+ │  ├─ js/
+ │  │  └─ nav.js
+ │  └─ img/
+ │     └─ bg/ (backgrounds, including galaxy themes)
+ └─ pages/
+    ├─ civic-lab/
+    │  └─ index.html
+    ├─ venture/
+    │  ├─ index.html
+    │  ├─ market-research.html
+    │  └─ product-prototypes.html
+    ├─ altius/
+    │  └─ index.html
+    ├─ research/
+    │  └─ index.html
+    └─ references/
+       └─ index.html
++
++
+diff --git a/assets/css/site.css b/assets/css/site.css
+index 69dbeede66b55cf50caffea96da3d88874c48a5b..d9546e4cb223dd0c90b248843e13a02d73a4af40 100644
+--- a/assets/css/site.css
++++ b/assets/css/site.css
+@@ -76,87 +76,105 @@ body.theme-galaxy::before{
+   filter: saturate(1.1) contrast(1.08);
+ }
+ 
+ body.theme-galaxy::after{
+   content:"";
+   position: fixed;
+   inset: 0;
+   pointer-events: none;
+   background:
+     radial-gradient(circle at 30% 10%, rgba(245,197,66,0.12), transparent 45%),
+     radial-gradient(circle at 70% 0%, rgba(120,140,255,0.12), transparent 50%);
+   mix-blend-mode: screen;
+   opacity: 0.55;
+ }
+ 
+ /* Header / Nav */
+ .site-header{
+   position: sticky;
+   top: 0;
+   z-index: 20;
+   backdrop-filter: blur(14px);
+   background: rgba(5,6,10,0.72);
+   border-bottom: 1px solid var(--border);
+ }
+ 
++.skip-link{
++  position: absolute;
++  left: -999px;
++  top: 8px;
++  padding: 10px 14px;
++  background: #0a0b12;
++  border: 2px solid var(--accent);
++  border-radius: 12px;
++  color: var(--text);
++  z-index: 999;
++}
++
++.skip-link:focus{ left: 16px; }
++
+ .header-inner{
+   width: min(var(--wrap), calc(100% - 32px));
+   margin: 0 auto;
+   display: flex;
+   gap: 14px;
+   align-items: center;
+   justify-content: space-between;
+   padding: 12px 0;
+ }
+ 
+ .brand-link{
+   display: inline-flex;
+   flex-direction: column;
+   gap: 2px;
+ }
+ 
+ .brand-title{
+   font-weight: 800;
+   letter-spacing: 0.02em;
+   font-size: 1.04rem;
+ }
+ 
+ .brand-sub{
+   color: var(--faint);
+   font-size: 0.86rem;
+ }
+ 
+ .nav-toggle{
+   display: none;
+   border: 1px solid var(--border);
+   background: rgba(255,255,255,0.04);
+   color: var(--text);
+   border-radius: 12px;
+   padding: 8px 10px;
+   cursor: pointer;
++  align-items: center;
++  gap: 6px;
+ }
+ 
++.nav-toggle-bar{ display: block; width: 18px; height: 2px; background: currentColor; }
++
+ .main-nav ul{
+   list-style: none;
+   padding: 0;
+   margin: 0;
+   display: flex;
+   gap: 10px;
+   flex-wrap: wrap;
+   justify-content: flex-end;
+   align-items: center;
+ }
+ 
+ .main-nav a{
+   display: inline-flex;
+   gap: 8px;
+   align-items: center;
+   padding: 8px 10px;
+   border-radius: 999px;
+   border: 1px solid transparent;
+   color: rgba(238,240,255,0.86);
+   font-size: 0.92rem;
+ }
+ 
+ .main-nav a:hover{
+   border-color: rgba(245,197,66,0.22);
+   background: rgba(245,197,66,0.08);
+@@ -166,50 +184,52 @@ body.theme-galaxy::after{
+   border-color: rgba(245,197,66,0.48);
+   background: rgba(245,197,66,0.10);
+   color: var(--accent2);
+ }
+ 
+ /* Mobile nav: uses .nav-open (matches site.js) */
+ @media (max-width: 900px){
+   .nav-toggle{ display: inline-flex; }
+   .main-nav{
+     position: absolute;
+     left: 16px;
+     right: 16px;
+     top: 64px;
+     display: none;
+     background: rgba(10,12,18,0.94);
+     border: 1px solid var(--border);
+     border-radius: var(--radius-lg);
+     padding: 12px;
+     box-shadow: var(--shadow);
+   }
+   .main-nav.nav-open{ display: block; }
+   .main-nav ul{ flex-direction: column; align-items: stretch;}
+   .main-nav a{ justify-content: space-between; }
+ }
+ 
++.nav-lock{ overflow: hidden; }
++
+ /* Buttons / links */
+ .btn{
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   gap: 8px;
+   padding: 10px 16px;
+   border-radius: 999px;
+   border: 1px solid var(--border);
+   background: rgba(255,255,255,0.04);
+   color: rgba(238,240,255,0.9);
+   cursor: pointer;
+   transition: transform .08s ease, background .12s ease, border-color .12s ease;
+ }
+ 
+ .btn:hover{
+   background: rgba(245,197,66,0.08);
+   border-color: rgba(245,197,66,0.28);
+ }
+ 
+ .btn:active{ transform: translateY(1px); }
+ 
+ .btn.primary{
+   background: linear-gradient(135deg, var(--accent), var(--accent2));
+   color: #1b1404;
+diff --git a/assets/js/site.js b/assets/js/site.js
+index 4cacbbacf764b4f2a319ddd45bbdf6faff6c9a3d..b9c9ebaa6036067494092f2dd0218b0194909aba 100644
+--- a/assets/js/site.js
++++ b/assets/js/site.js
+@@ -1,139 +1,123 @@
+-*** Begin Patch
+-*** Update File: assets/js/site.js
+-@@
+- (() => {
+-   const ready = (fn) => {
+-     if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn);
+-     else fn();
+-   };
+- 
+-   const normalize = (path) => (path || "").replace(/\/+$/, "").toLowerCase();
+- 
+-   // Works for GitHub Pages project sites: /<repo-name>/...
+-   // Also behaves fine on user/org pages by returning "" when there's no path segment.
+-   const getBase = () => {
+-     const parts = window.location.pathname.split("/").filter(Boolean);
+-     return parts.length ? `/${parts[0]}` : "";
+-   };
+-
+-+  // Load header/footer partials into <div data-include="..."></div> elements.
+-+  async function includePartials() {
+-+    const containers = document.querySelectorAll("[data-include]");
+-+    if (!containers.length) return;
+-+    const base = getBase();
+-+    const fetchPartial = async (name) => {
+-+      const url = `${base}/partials/${name}.html`;
+-+      const res = await fetch(url);
+-+      return res.ok ? await res.text() : "";
+-+    };
+-+    for (const el of containers) {
+-+      const name = el.getAttribute("data-include");
+-+      try {
+-+        const html = await fetchPartial(name);
+-+        el.outerHTML = html;
+-+      } catch (err) {
+-+        console.error("Failed to load partial:", name, err);
+-+      }
+-+    }
+-+  }
+-
+-   ready(() => {
+--    const base = getBase();
+-+    const base = getBase();
+- 
+--    // Mobile nav toggle
+--    const btn = document.querySelector(".nav-toggle");
+--    const nav = document.querySelector(".main-nav");
+--    if (btn && nav) {
+--      btn.addEventListener("click", () => {
+--        const open = nav.classList.toggle("nav-open");
+--        btn.setAttribute("aria-expanded", String(open));
+--      });
+--
+--      // close menu after clicking a link on mobile
+--      nav.querySelectorAll("a").forEach((a) => {
+--        a.addEventListener("click", () => {
+--          nav.classList.remove("nav-open");
+--          btn.setAttribute("aria-expanded", "false");
+--        });
+--      });
+--    }
+--
+--    // Active nav link
+--    const cur = normalize(window.location.pathname);
+--
+--    document.querySelectorAll(".main-nav a[href]").forEach((a) => {
+--      const href = a.getAttribute("href") || "";
+--      let targetPath = "";
+--
+--      try {
+--        // Resolve relative hrefs correctly
+--        targetPath = normalize(new URL(href, window.location.origin).pathname);
+--      } catch {
+--        targetPath = normalize(href);
+--      }
+--
+--      // Normalize base-prefixed absolute links too
+--      const curNoBase = normalize(cur.replace(base.toLowerCase(), "")) || "/";
+--      const targetNoBase = normalize(targetPath.replace(base.toLowerCase(), "")) || "/";
+--
+--      // Exact match OR "is a subpath of" (but never let "/" match everything)
+--      const active =
+--        curNoBase === targetNoBase ||
+--        (targetNoBase !== "/" && curNoBase.startsWith(targetNoBase + "/"));
+--
+--      a.classList.toggle("active", active);
+--    });
+--
+--    // Footer year
+--    const year = document.getElementById("year");
+--    if (year) year.textContent = String(new Date().getFullYear());
+-+    // First inject header/footer, then set up nav and year.
+-+    includePartials().then(() => {
+-+      setupNav();
+-+    });
+-+
+-+    function setupNav() {
+-+      // Mobile nav toggle
+-+      const btn = document.querySelector(".nav-toggle");
+-+      const nav = document.querySelector(".main-nav");
+-+      if (btn && nav) {
+-+        btn.addEventListener("click", () => {
+-+          const open = nav.classList.toggle("nav-open");
+-+          btn.setAttribute("aria-expanded", String(open));
+-+        });
+-+        nav.querySelectorAll("a").forEach((a) => {
+-+          a.addEventListener("click", () => {
+-+            nav.classList.remove("nav-open");
+-+            btn.setAttribute("aria-expanded", "false");
+-+          });
+-+        });
+-+      }
+-+
+-+      // Active nav link highlight
+-+      const cur = normalize(window.location.pathname);
+-+      document.querySelectorAll(".main-nav a[href]").forEach((a) => {
+-+        const href = a.getAttribute("href") || "";
+-+        let targetPath = "";
+-+        try {
+-+          targetPath = normalize(new URL(href, window.location.origin).pathname);
+-+        } catch {
+-+          targetPath = normalize(href);
+-+        }
+-+        const curNoBase = normalize(cur.replace(base.toLowerCase(), "")) || "/";
+-+        const targetNoBase = normalize(targetPath.replace(base.toLowerCase(), "")) || "/";
+-+        const active =
+-+          curNoBase === targetNoBase ||
+-+          (targetNoBase !== "/" && curNoBase.startsWith(targetNoBase + "/"));
+-+        a.classList.toggle("active", active);
+-+      });
+-+
+-+      // Footer year
+-+      const year = document.getElementById("year");
+-+      if (year) year.textContent = String(new Date().getFullYear());
+-+    }
+-   });
+--  });
+-+  });
+-*** End Patch
+-*** End Patch
++(() => {
++  const ready = (fn) => {
++    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn);
++    else fn();
++  };
++
++  const normalize = (path) => (path || "").replace(/\/+$/, "").toLowerCase();
++
++  // Works for GitHub Pages project sites: /<repo-name>/...
++  // Also behaves fine on user/org pages by returning "" when there's no path segment.
++  const getBase = () => {
++    const parts = window.location.pathname.split("/").filter(Boolean);
++    return parts.length ? `/${parts[0]}` : "";
++  };
++
++  // Load header/footer partials into <div data-include="..."></div> elements.
++  async function includePartials(base) {
++    const containers = document.querySelectorAll("[data-include]");
++    if (!containers.length) return;
++
++    const fetchPartial = async (name) => {
++      const url = `${base}/partials/${name}.html`;
++      const res = await fetch(url);
++      return res.ok ? await res.text() : "";
++    };
++
++    for (const el of containers) {
++      const name = el.getAttribute("data-include");
++      try {
++        const html = await fetchPartial(name);
++        el.outerHTML = html;
++      } catch (err) {
++        console.error("Failed to load partial:", name, err);
++      }
++    }
++  }
++
++  const prefixNavLinks = (base) => {
++    document.querySelectorAll("[data-nav-path]").forEach((a) => {
++      const path = a.getAttribute("data-nav-path");
++      if (!path) return;
++      const normalized = path.startsWith("/") ? path : `/${path}`;
++      a.setAttribute("href", `${base}${normalized}`);
++    });
++  };
++
++  const closeNav = (nav, btn) => {
++    if (!nav || !btn) return;
++    nav.classList.remove("nav-open");
++    btn.setAttribute("aria-expanded", "false");
++    document.body.classList.remove("nav-lock");
++  };
++
++  ready(() => {
++    const base = getBase();
++
++    includePartials(base).then(() => {
++      setupNav(base);
++      setFooterYear();
++    });
++
++    function setupNav(basePath) {
++      prefixNavLinks(basePath);
++
++      const btn = document.querySelector(".nav-toggle");
++      const nav = document.querySelector(".main-nav");
++
++      if (btn && nav) {
++        const navContainer = nav.closest(".site-header") || nav;
++
++        btn.addEventListener("click", () => {
++          const open = nav.classList.toggle("nav-open");
++          btn.setAttribute("aria-expanded", String(open));
++          document.body.classList.toggle("nav-lock", open);
++          if (open) btn.focus();
++        });
++
++        nav.querySelectorAll("a").forEach((a) => {
++          a.addEventListener("click", () => closeNav(nav, btn));
++        });
++
++        document.addEventListener("keydown", (e) => {
++          if (e.key === "Escape") closeNav(nav, btn);
++        });
++
++        document.addEventListener("click", (e) => {
++          if (!nav.classList.contains("nav-open")) return;
++          if (nav.contains(e.target) || btn.contains(e.target)) return;
++          closeNav(nav, btn);
++        });
++
++        document.addEventListener("focusin", (e) => {
++          if (!nav.classList.contains("nav-open")) return;
++          if (navContainer.contains(e.target) || btn.contains(e.target)) return;
++          closeNav(nav, btn);
++        });
++      }
++
++      // Active nav link highlight
++      const cur = normalize(window.location.pathname);
++      document.querySelectorAll(".main-nav a[href]").forEach((a) => {
++        const href = a.getAttribute("href") || "";
++        let targetPath = "";
++        try {
++          targetPath = normalize(new URL(href, window.location.origin).pathname);
++        } catch {
++          targetPath = normalize(href);
++        }
++        const curNoBase = normalize(cur.replace(basePath.toLowerCase(), "")) || "/";
++        const targetNoBase = normalize(targetPath.replace(basePath.toLowerCase(), "")) || "/";
++        const active =
++          curNoBase === targetNoBase ||
++          (targetNoBase !== "/" && curNoBase.startsWith(targetNoBase + "/"));
++        a.classList.toggle("active", active);
++      });
++    }
++
++    function setFooterYear() {
++      const year = document.getElementById("year");
++      if (year) year.textContent = String(new Date().getFullYear());
++    }
++  });
++})();
+diff --git a/index.html b/index.html
+index c807490c53cb057fe7671d546328ad376fc288b0..6fa5d4e85949e62229867cfdfc08857859fbd4ed 100644
+--- a/index.html
++++ b/index.html
+@@ -1,74 +1,45 @@
+ <!doctype html>
+ <html lang="en">
+ <head>
+   <meta charset="utf-8" />
+   <title>The Reverie — Civic Research + Civic Lab</title>
+   <meta name="viewport" content="width=device-width, initial-scale=1" />
+   <meta
+     name="description"
+     content="The Reverie is a civic research hub and civic lab: dissertation-scale work on democracy and civic learning, plus field-tested civic tools, games, and prototypes—including ALTIUS."
+   />
+ 
+   <!-- Global styles + behavior -->
+   <link rel="stylesheet" href="assets/css/site.css" />
+   <script src="assets/js/site.js" defer></script>
+ </head>
+ 
+ <body class="theme-galaxy">
+-  <!-- HEADER -->
+-  <header class="site-header">
+-    <div class="header-inner">
+-      <a href="index.html" class="brand-link">
+-        <span class="brand-title">The Reverie</span>
+-        <span class="brand-sub">Civic Research + Civic Lab</span>
+-      </a>
+-
+-      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+-        <span class="nav-toggle-bar"></span>
+-        <span class="nav-toggle-bar"></span>
+-      </button>
+-
+-      <nav class="main-nav" aria-label="Main navigation">
+-        <ul>
+-          <li><a href="index.html">Home</a></li>
+-          <li><a href="pages/research/index.html">Research</a></li>
+-          <li><a href="pages/lab/index.html">Civic Lab</a></li>
+-          <li><a href="pages/altius/index.html">ALTIUS</a></li>
+-          <li><a href="pages/venture/index.html">Venture</a></li>
+-          <li><a href="pages/about/references.html">References</a></li>
+-          <li>
+-            <a href="https://syndorzaldrizes.github.io/Syndor/" target="_blank" rel="noopener">
+-              MSL Site ↗
+-            </a>
+-          </li>
+-        </ul>
+-      </nav>
+-    </div>
+-  </header>
+-
+-  <main id="top">
++  <div data-include="header"></div>
++
++  <main id="main">
+     <!-- HERO -->
+     <section class="hero">
+       <div class="wrap hero-grid">
+         <div>
+           <p class="kicker">Public research hub + civic lab</p>
+           <h1>The Reverie</h1>
+           <p class="lead">
+             A living lab for democracy: dissertation-scale research on democratic erosion and civic learning,
+             plus field-tested civic tools, games, and prototypes—including ALTIUS.
+           </p>
+ 
+           <div class="actions" aria-label="Primary actions">
+             <a class="btn primary" href="pages/research/index.html">Enter the research</a>
+             <a class="btn" href="pages/lab/index.html">Explore the Civic Lab</a>
+             <a class="btn" href="pages/altius/index.html">ALTIUS prototype →</a>
+           </div>
+         </div>
+ 
+         <aside class="hero-card">
+           <h2>What lives here</h2>
+           <p>
+             The Reverie is where academic work, civic design, and live experiments meet:
+             research threads, campus studies, civic games, and a prototype agent (ALTIUS)
+             that pokes at how people actually move.
+           </p>
+@@ -176,45 +147,28 @@
+             Maryland Student Legislature @ SMCM is the live sandbox: a student legislature
+             where rules, agendas, and games from The Reverie can be tested in an actual
+             institutional setting.
+           </p>
+         </div>
+ 
+         <div class="card">
+           <p>
+             If The Reverie is the lab, MSL is one of the main “field sites.” Bills, debates,
+             and delegations become a venue to try new approaches to civic learning and
+             institutional literacy.
+           </p>
+           <a
+             class="btn small"
+             href="https://syndorzaldrizes.github.io/Syndor/"
+             target="_blank"
+             rel="noopener"
+           >
+             Visit MSL site ↗
+           </a>
+         </div>
+       </div>
+     </section>
+   </main>
+ 
+-  <!-- FOOTER -->
+-  <footer class="site-footer">
+-    <div class="footer-inner">
+-      <div>
+-        <p>
+-          © <span id="year"></span> The Reverie.
+-          Prototype-driven civic research + civic lab.
+-        </p>
+-      </div>
+-      <div>
+-        <p class="footer-links-inline">
+-          <a class="textlink" href="pages/about/references.html">References</a>
+-          &nbsp;·&nbsp;
+-          <a class="textlink" href="#top">Back to top</a>
+-        </p>
+-      </div>
+-    </div>
+-  </footer>
++  <div data-include="footer"></div>
+ </body>
+ </html>
+diff --git a/pages/about/index.html b/pages/about/index.html
+index 1e5fcd4a531a7d3c52618630ca8709e934fae99d..6c1e4f878ca7657b11366456a5a3c0774a983d0d 100644
+--- a/pages/about/index.html
++++ b/pages/about/index.html
+@@ -1,102 +1,71 @@
+ <!doctype html>
+ <html lang="en">
+ <head>
+   <meta charset="UTF-8" />
+   <title>About — The Reverie</title>
+   <meta name="viewport" content="width=device-width, initial-scale=1" />
+   <meta
+     name="description"
+     content="About The Reverie: a civic research hub and civic lab combining academic work, experiments, and prototypes like ALTIUS."
+   />
+ 
+-  <link rel="stylesheet" href="/the-reverie/assets/css/site.css" />
+-  <script src="/the-reverie/assets/js/site.js" defer></script>
++  <link rel="stylesheet" href="../../assets/css/site.css" />
++  <script src="../../assets/js/site.js" defer></script>
+ </head>
+ 
+ <body class="theme-galaxy">
+-  <header class="site-header">
+-    <div class="header-inner">
+-      <a class="brand-link" href="/the-reverie/index.html">
+-        <span class="brand-title">The Reverie</span>
+-        <span class="brand-sub">Civic Research + Civic Lab</span>
+-      </a>
++  <div data-include="header"></div>
+ 
+-      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+-
+-      <nav class="main-nav" aria-label="Primary navigation">
+-        <ul>
+-          <li><a href="/the-reverie/index.html">Home</a></li>
+-          <li><a href="/the-reverie/pages/research/">Research</a></li>
+-          <li><a href="/the-reverie/pages/civic-lab/">Civic Lab</a></li>
+-          <li><a href="/the-reverie/pages/altius/">ALTIUS</a></li>
+-          <li><a href="/the-reverie/pages/venture/">Venture</a></li>
+-          <li><a href="/the-reverie/about/index.html">About</a></li>
+-          <li><a href="/the-reverie/about/references.html">References</a></li>
+-          <li>
+-            <a href="https://syndorzaldrizes.github.io/Syndor/" target="_blank" rel="noopener">
+-              MSL Site ↗
+-            </a>
+-          </li>
+-        </ul>
+-      </nav>
+-    </div>
+-  </header>
+-
+-  <main id="top">
++  <main id="main">
+     <section class="hero">
+       <div class="wrap">
+         <p class="kicker">Context</p>
+         <h1>About</h1>
+         <p class="lead">
+           The Reverie is a hybrid: a research hub rigorous enough for academia, and a civic lab usable enough for real people.
+           The loop is the point—research generates claims, prototypes generate feedback, and iteration sharpens both.
+         </p>
+ 
+         <div class="actions">
+-          <a class="btn primary" href="/the-reverie/pages/research/">Research hub</a>
+-          <a class="btn" href="/the-reverie/pages/civic-lab/">Civic Lab</a>
+-          <a class="btn" href="/the-reverie/about/references.html">References</a>
++          <a class="btn primary" href="../research/">Research hub</a>
++          <a class="btn" href="../lab/">Civic Lab</a>
++          <a class="btn" href="./references.html">References</a>
+         </div>
+       </div>
+     </section>
+ 
+     <section class="section">
+       <div class="wrap">
+         <header class="section-head">
+           <h2>What lives here</h2>
+           <p>
+             This site’s content is grouped into a few pillars so visitors don’t get lost.
+           </p>
+         </header>
+ 
+         <div class="grid3">
+           <article class="card">
+             <h3>Academic thread</h3>
+             <p>Dissertation-scale work on democratic erosion, inequality, and civic learning—plus course artifacts that feed into it.</p>
+-            <a class="textlink" href="/the-reverie/pages/research/">Go to Research →</a>
++            <a class="textlink" href="../research/">Go to Research →</a>
+           </article>
+ 
+           <article class="card">
+             <h3>Applied civic lab</h3>
+             <p>Modules, mini-games, and field-tested engagement tools designed for students, orgs, and real civic ecosystems.</p>
+-            <a class="textlink" href="/the-reverie/pages/civic-lab/">Go to Civic Lab →</a>
++            <a class="textlink" href="../lab/">Go to Civic Lab →</a>
+           </article>
+ 
+           <article class="card">
+             <h3>Prototypes</h3>
+             <p>Experiments like ALTIUS: designed to move people from intention to action, not to replace their agency.</p>
+-            <a class="textlink" href="/the-reverie/pages/altius/">Go to ALTIUS →</a>
++            <a class="textlink" href="../altius/">Go to ALTIUS →</a>
+           </article>
+         </div>
+       </div>
+     </section>
+   </main>
+ 
+-  <footer class="site-footer">
+-    <div class="footer-inner">
+-      <span>© <span id="year"></span> The Reverie.</span>
+-      <span>Built for iteration.</span>
+-    </div>
+-  </footer>
++  <div data-include="footer"></div>
+ </body>
+ </html>
+diff --git a/pages/about/references.html b/pages/about/references.html
+index 958c5658906258598f3d87af880385874436bf3b..8f4e78ef6b85bd83cf61e29ff492617d9955e822 100644
+--- a/pages/about/references.html
++++ b/pages/about/references.html
+@@ -1,39 +1,39 @@
+ <!doctype html>
+ <html lang="en">
+ <head>
+   <meta charset="UTF-8" />
+   <title>References — The Reverie</title>
+   <meta name="viewport" content="width=device-width, initial-scale=1" />
+   <meta
+     name="description"
+     content="Works cited and source appendix for The Reverie: books, articles, reports, and research used across the site."
+   />
+ 
+   <!-- Global site styling + behavior -->
+-  <link rel="stylesheet" href="/the-reverie/assets/css/site.css" />
+-  <script src="/the-reverie/assets/js/site.js" defer></script>
++  <link rel="stylesheet" href="../../assets/css/site.css" />
++  <script src="../../assets/js/site.js" defer></script>
+ 
+   <style>
+     /* Page-only polish (scoped) */
+     .refs-hero { padding: 42px 0 12px; }
+     .refs-tools {
+       margin-top: 12px;
+       display: grid;
+       grid-template-columns: 1fr auto;
+       gap: 12px;
+       align-items: center;
+     }
+     @media (max-width: 900px) {
+       .refs-tools { grid-template-columns: 1fr; }
+     }
+     .refs-search {
+       border: 1px solid rgba(160, 164, 184, 0.28);
+       background: rgba(255,255,255,0.03);
+       color: rgba(238,240,255,0.92);
+       border-radius: 14px;
+       padding: 10px 12px;
+       font-size: 1rem;
+       width: 100%;
+     }
+     .refs-meta {
+       color: rgba(238,240,255,0.72);
+@@ -58,80 +58,53 @@
+     }
+     .refs-chiprow { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+     .chip {
+       border: 1px solid rgba(160,164,184,0.28);
+       background: rgba(255,255,255,0.03);
+       padding: 6px 10px;
+       border-radius: 999px;
+       font-size: 0.9rem;
+       cursor: pointer;
+       user-select: none;
+     }
+     .chip.active {
+       border-color: rgba(245,197,66,0.55);
+       background: rgba(245,197,66,0.10);
+       color: rgba(255,221,107,0.98);
+     }
+     .refs-empty {
+       display: none;
+       margin-top: 14px;
+       color: rgba(238,240,255,0.72);
+     }
+   </style>
+ </head>
+ 
+ <body class="theme-galaxy">
+-  <!-- Unified header (same as root style) -->
+-  <header class="site-header">
+-    <div class="header-inner">
+-      <a class="brand-link" href="/the-reverie/index.html">
+-        <span class="brand-title">The Reverie</span>
+-        <span class="brand-sub">Civic Research + Civic Lab</span>
+-      </a>
++  <div data-include="header"></div>
+ 
+-      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+-
+-      <nav class="main-nav" aria-label="Primary navigation">
+-        <ul>
+-          <li><a href="/the-reverie/index.html">Home</a></li>
+-          <li><a href="/the-reverie/pages/research/">Research</a></li>
+-          <li><a href="/the-reverie/pages/civic-lab/">Civic Lab</a></li>
+-          <li><a href="/the-reverie/pages/altius/">ALTIUS</a></li>
+-          <li><a href="/the-reverie/pages/venture/">Venture</a></li>
+-          <li><a href="/the-reverie/about/index.html">About</a></li>
+-          <li><a href="/the-reverie/about/references.html">References</a></li>
+-          <li>
+-            <a href="https://syndorzaldrizes.github.io/Syndor/" target="_blank" rel="noopener">
+-              MSL Site ↗
+-            </a>
+-          </li>
+-        </ul>
+-      </nav>
+-    </div>
+-  </header>
+-
+-  <main id="top">
++  <main id="main">
+     <section class="hero refs-hero">
+       <div class="wrap">
+         <p class="kicker">Appendix · Sources</p>
+         <h1>References</h1>
+         <p class="lead">
+           Works cited and source appendix used across The Reverie. This list is living: it grows as the research and prototypes evolve.
+         </p>
+ 
+         <div class="refs-tools">
+           <input
+             id="refSearch"
+             class="refs-search"
+             type="search"
+             placeholder="Search references (author, year, title, keyword)…"
+             aria-label="Search references"
+           />
+           <div class="refs-meta">
+             <span id="refCount">0</span> shown
+           </div>
+         </div>
+ 
+         <div class="refs-chiprow" aria-label="Filters">
+           <span class="chip active" data-filter="all">All</span>
+           <span class="chip" data-filter="book">Books</span>
+           <span class="chip" data-filter="article">Articles</span>
+@@ -192,51 +165,51 @@
+               <a href="https://www.cornellpress.cornell.edu/book/9780801484636/the-racial-contract/" target="_blank" rel="noopener">Link</a>
+             </li>
+ 
+             <li data-type="book">
+               Putnam, R. (2000). <em>Bowling Alone: The Collapse and Revival of American Community.</em> Simon &amp; Schuster.
+               <a href="https://archive.org/details/bowlingalone00robe_0" target="_blank" rel="noopener">Link</a>
+             </li>
+ 
+             <li data-type="report">
+               Tufts CIRCLE. (2025). <em>Gen Z and Democracy Report.</em> Center for Information &amp; Research on Civic Learning and Engagement.
+               <a href="https://circle.tufts.edu/latest-research" target="_blank" rel="noopener">Link</a>
+             </li>
+ 
+             <li data-type="book">
+               Youniss, J., &amp; Yates, M. (1997). <em>Community Service and Social Responsibility in Youth.</em> University of Chicago Press.
+               <a href="https://press.uchicago.edu/ucp/books/book/chicago/C/bo3684204.html" target="_blank" rel="noopener">Link</a>
+             </li>
+           </ol>
+ 
+           <p class="refs-empty" id="refsEmpty">
+             No matches. Try a different keyword or clear filters.
+           </p>
+ 
+           <div style="margin-top: 16px;">
+             <a class="btn small" href="#top">Back to top ↑</a>
+-            <a class="btn small" href="/the-reverie/about/index.html">About →</a>
++            <a class="btn small" href="./index.html">About →</a>
+           </div>
+         </div>
+       </div>
+     </section>
+   </main>
+ 
+   <footer class="site-footer">
+     <div class="footer-inner">
+       <span>© <span id="year"></span> The Reverie.</span>
+       <span>Sources evolve with the research.</span>
+     </div>
+   </footer>
+ 
+   <script>
+     (function () {
+       const search = document.getElementById("refSearch");
+       const list = document.getElementById("refsList");
+       const items = Array.from(list.querySelectorAll("li"));
+       const chips = Array.from(document.querySelectorAll(".chip"));
+       const count = document.getElementById("refCount");
+       const empty = document.getElementById("refsEmpty");
+ 
+       let activeType = "all";
+ 
+       function apply() {
+@@ -248,27 +221,28 @@
+           const textOk = !q || li.textContent.toLowerCase().includes(q);
+           const ok = typeOk && textOk;
+           li.style.display = ok ? "" : "none";
+           if (ok) shown++;
+         });
+ 
+         count.textContent = String(shown);
+         empty.style.display = shown === 0 ? "block" : "none";
+       }
+ 
+       chips.forEach((c) => {
+         c.addEventListener("click", () => {
+           chips.forEach(x => x.classList.remove("active"));
+           c.classList.add("active");
+           activeType = c.dataset.filter;
+           apply();
+         });
+       });
+ 
+       search.addEventListener("input", apply);
+ 
+       // initial
+       apply();
+     })();
+   </script>
++  <div data-include="footer"></div>
+ </body>
+ </html>
+diff --git a/pages/lab/index.html b/pages/lab/index.html
+index 89dde237483e48e25a93069b32c9966cff1c2dc6..b0eaf0a346d800b1ea3b534bcdf625e382b60ea3 100644
+--- a/pages/lab/index.html
++++ b/pages/lab/index.html
+@@ -1,38 +1,38 @@
+ <!doctype html>
+ <html lang="en">
+ <head>
+   <meta charset="UTF-8" />
+   <title>Civic Lab — The Reverie</title>
+   <meta name="viewport" content="width=device-width, initial-scale=1" />
+   <meta
+     name="description"
+     content="Civic Lab services, game-style activities, and applied experiments to help student orgs, classes, and youth projects build real democratic engagement."
+   />
+ 
+-  <link rel="stylesheet" href="/the-reverie/assets/css/site.css" />
+-  <script src="/the-reverie/assets/js/site.js" defer></script>
++  <link rel="stylesheet" href="../../assets/css/site.css" />
++  <script src="../../assets/js/site.js" defer></script>
+ 
+   <style>
+     .lab-hero { padding: 42px 0 12px; }
+     .lab-grid {
+       margin-top: 16px;
+       display: grid;
+       grid-template-columns: repeat(2, minmax(0, 1fr));
+       gap: 14px;
+     }
+     @media (max-width: 900px) { .lab-grid { grid-template-columns: 1fr; } }
+ 
+     .mini { color: rgba(238,240,255,0.75); margin: 8px 0 0; }
+     .tagline { color: rgba(238,240,255,0.82); margin: 10px 0 0; }
+     .pillrow { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+     .pill {
+       border: 1px solid rgba(160,164,184,0.28);
+       background: rgba(255,255,255,0.03);
+       padding: 6px 10px;
+       border-radius: 999px;
+       font-size: 0.9rem;
+       color: rgba(238,240,255,0.84);
+     }
+     .pill.hot{
+       border-color: rgba(245,197,66,0.55);
+       background: rgba(245,197,66,0.10);
+@@ -44,105 +44,79 @@
+     .activity p { margin: 0 0 10px; color: rgba(238,240,255,0.80); }
+     .activity .small { margin-top: 10px; color: rgba(238,240,255,0.72); }
+     .activity ol, .activity ul { margin: 8px 0 0; color: rgba(238,240,255,0.84); }
+     .activity li { margin: 6px 0; }
+ 
+     .two-col {
+       display: grid;
+       grid-template-columns: 1.1fr 0.9fr;
+       gap: 14px;
+       align-items: start;
+       margin-top: 14px;
+     }
+     @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
+ 
+     .calloutbox{ padding: 16px; }
+     .calloutbox h3{ margin: 0 0 8px; }
+     .calloutbox p{ margin: 0 0 10px; color: rgba(238,240,255,0.78); }
+     .calloutbox ul{ margin: 0; padding-left: 18px; color: rgba(238,240,255,0.86); }
+     .calloutbox li{ margin: 7px 0; }
+ 
+     .cta-row { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+   </style>
+ </head>
+ 
+ <body class="theme-galaxy">
+-  <header class="site-header">
+-    <div class="header-inner">
+-      <a class="brand-link" href="/the-reverie/index.html">
+-        <span class="brand-title">The Reverie</span>
+-        <span class="brand-sub">Civic Research + Civic Lab</span>
+-      </a>
+-
+-      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+-
+-      <nav class="main-nav" aria-label="Primary navigation">
+-        <ul>
+-          <li><a href="/the-reverie/index.html">Home</a></li>
+-          <li><a href="/the-reverie/pages/research/">Research</a></li>
+-          <li><a href="/the-reverie/pages/lab/">Civic Lab</a></li>
+-          <li><a href="/the-reverie/pages/altius/">ALTIUS</a></li>
+-          <li><a href="/the-reverie/pages/venture/">Venture</a></li>
+-          <li><a href="/the-reverie/about/index.html">About</a></li>
+-          <li><a href="/the-reverie/about/references.html">References</a></li>
+-          <li>
+-            <a href="https://syndorzaldrizes.github.io/Syndor/" target="_blank" rel="noopener">
+-              MSL Site ↗
+-            </a>
+-          </li>
+-        </ul>
+-      </nav>
+-    </div>
+-  </header>
+-
+-  <main id="top">
++  <div data-include="header"></div>
++
++  <main id="main">
+     <section class="hero lab-hero">
+       <div class="wrap">
+         <p class="kicker">Applied side · Modules · Serious games</p>
+         <h1>Civic Lab</h1>
+         <p class="lead">
+           This is where theory leaves the PDF. The Civic Lab builds workshops, activity kits, and game-style experiences
+           for student governments, clubs, classes, and youth programs that want to actually practice democracy—
+           not just argue about it.
+         </p>
+ 
+         <p class="tagline">
+           Designed to be <strong>nonpartisan</strong>, skills-first, and deployable in <strong>30–60 minutes</strong>.
+         </p>
+ 
+         <div class="pillrow" aria-label="Lab tags">
+           <span class="pill hot">Action over abstraction</span>
+           <span class="pill">Deliberation</span>
+           <span class="pill">Coalitions</span>
+           <span class="pill">Institution literacy</span>
+           <span class="pill">Student leadership</span>
+         </div>
+ 
+         <div class="cta-row">
+-          <a class="btn primary" href="/the-reverie/pages/altius/">Try ALTIUS →</a>
+-          <a class="btn" href="/the-reverie/pages/venture/">See Venture track →</a>
+-          <a class="link" href="/the-reverie/about/references.html">Sources / references →</a>
++          <a class="btn primary" href="../altius/">Try ALTIUS →</a>
++          <a class="btn" href="../venture/">See Venture track →</a>
++          <a class="link" href="../about/references.html">Sources / references →</a>
+         </div>
+       </div>
+     </section>
+ 
+     <section class="section" style="padding-top: 18px;">
+       <div class="wrap">
+         <header class="section-head">
+           <h2>Who this is for</h2>
+           <p>Pick your environment. The Lab adapts, but the point stays the same: build democratic skill through practice.</p>
+         </header>
+ 
+         <div class="grid3">
+           <article class="card" style="padding: 16px;">
+             <h3>Student governments &amp; delegations</h3>
+             <p>Bylaws that work, meetings that don’t melt down, and participation beyond the same three people.</p>
+           </article>
+ 
+           <article class="card" style="padding: 16px;">
+             <h3>Clubs &amp; campus orgs</h3>
+             <p>Simple governance habits: agenda-setting, fair debate, decisions that feel legitimate.</p>
+           </article>
+ 
+           <article class="card" style="padding: 16px;">
+             <h3>Educators &amp; youth programs</h3>
+             <p>Drop-in modules that teach civic literacy, media sorting, and institutional pathways—without a full simulation course.</p>
+@@ -231,51 +205,51 @@
+             <ul>
+               <li>Clarify complicated procedures in plain language (then you verify).</li>
+               <li>Draft agendas, emails, workshop outlines (you edit + own it).</li>
+               <li>Refactor messy bylaws <em>without changing powers or thresholds</em> (you review line-by-line).</li>
+               <li>Help you create “next step” plans—especially when people freeze.</li>
+             </ul>
+           </article>
+ 
+           <article class="card calloutbox">
+             <h3>What AI is not allowed to be</h3>
+             <ul>
+               <li>A substitute for institutional authority (laws, official manuals, policy).</li>
+               <li>A citation machine without verification.</li>
+               <li>A “do my civic work for me” button (outsourcing agency kills the point).</li>
+               <li>A black box that demands trust. If it can’t explain, it doesn’t get to decide.</li>
+             </ul>
+           </article>
+         </div>
+ 
+         <div class="card" style="padding: 16px; margin-top: 14px;">
+           <h3 style="margin: 0 0 8px;">ALTIUS (prototype) — the lab’s catalyst tool</h3>
+           <p style="margin: 0 0 10px; color: rgba(238,240,255,0.78);">
+             ALTIUS is designed to push people from “stuck” → “moving.” It’s not a homework engine. It’s a momentum engine.
+             The Lab uses it as an experiment in civic agency: what actually gets people to act.
+           </p>
+-          <a class="btn primary" href="/the-reverie/pages/altius/">Open ALTIUS →</a>
++          <a class="btn primary" href="../altius/">Open ALTIUS →</a>
+         </div>
+       </div>
+     </section>
+ 
+     <section class="section">
+       <div class="wrap">
+         <header class="section-head">
+           <h2>Service packages &amp; collaborations</h2>
+           <p>Structured offers for orgs that want help—designed to be realistic for student budgets.</p>
+         </header>
+ 
+         <div class="grid3">
+           <article class="card" style="padding: 16px;">
+             <h3>Starter Civic Blueprint</h3>
+             <p>For new orgs that need structure without losing their soul.</p>
+             <ul style="margin: 0; padding-left: 18px; color: rgba(238,240,255,0.86);">
+               <li>Bylaws template tailored to your environment</li>
+               <li>Sample agendas + recruitment scripts</li>
+               <li>1× 60-minute consult + follow-up guide</li>
+             </ul>
+           </article>
+ 
+           <article class="card" style="padding: 16px;">
+             <h3>Workshops (skills-first)</h3>
+             <p>Hands-on sessions on agenda-setting, deliberation, coalitions, and procedure.</p>
+@@ -294,42 +268,37 @@
+               <li>Templates for org usage</li>
+               <li>Ethics + governance basics</li>
+             </ul>
+           </article>
+         </div>
+ 
+         <p class="mini">Pricing: sliding-scale / custom depending on scope.</p>
+       </div>
+     </section>
+ 
+     <section class="section">
+       <div class="wrap">
+         <header class="section-head">
+           <h2>What you can do right now</h2>
+           <p>Pick one move. Run it. Report back. That’s how the Lab grows.</p>
+         </header>
+ 
+         <div class="card" style="padding: 16px;">
+           <ul style="margin: 0; padding-left: 18px; color: rgba(238,240,255,0.88);">
+             <li><strong>Student leader?</strong> run Agenda Jenga or Budget Lab at your next meeting.</li>
+             <li><strong>Club or delegation?</strong> start a shared doc: “Our Civic Blueprint”.</li>
+             <li><strong>Instructor?</strong> drop Spectacle vs Substance into a 30-minute block.</li>
+             <li><strong>Try ALTIUS:</strong> use it as momentum tool; compare before vs after.</li>
+           </ul>
+           <div class="cta-row">
+-            <a class="btn primary" href="/the-reverie/pages/altius/">Run ALTIUS →</a>
+-            <a class="btn" href="/the-reverie/about/references.html">See references →</a>
+-            <a class="btn" href="/the-reverie/index.html">Back home →</a>
++            <a class="btn primary" href="../altius/">Run ALTIUS →</a>
++            <a class="btn" href="../about/references.html">See references →</a>
++            <a class="btn" href="../../index.html">Back home →</a>
+           </div>
+         </div>
+       </div>
+     </section>
+   </main>
+ 
+-  <footer class="site-footer">
+-    <div class="footer-inner">
+-      <span>© <span id="year"></span> The Reverie.</span>
+-      <span>Practice is the point.</span>
+-    </div>
+-  </footer>
++  <div data-include="footer"></div>
+ </body>
+ </html>
+diff --git a/pages/research/altius-dissertation.html b/pages/research/altius-dissertation.html
+index 0fdf93e6c964a34739e458c27526b1fecf4c1387..c4927824162ee827d6a61eb7bb40c4ec277284fa 100644
+--- a/pages/research/altius-dissertation.html
++++ b/pages/research/altius-dissertation.html
+@@ -57,86 +57,51 @@
+       padding: .1rem .45rem;
+       border-radius: 8px;
+       border: 1px solid rgba(255,255,255,.18);
+       background: rgba(0,0,0,.30);
+       white-space: nowrap;
+     }
+ 
+     .toc {
+       padding: 1rem 1.1rem;
+       border-radius: 16px;
+       background: rgba(255,255,255,.05);
+       border: 1px solid rgba(255,255,255,.10);
+     }
+     .toc h3 { margin: 0 0 .5rem; }
+     .toc ul { margin: .35rem 0 0 1.1rem; }
+     .toc a { text-decoration: none; }
+     .toc a:hover { text-decoration: underline; }
+ 
+     .footnote { font-size: .9rem; opacity: .85; }
+     .hr { height: 1px; background: rgba(255,255,255,.10); border: 0; margin: 1.25rem 0; }
+   </style>
+ </head>
+ 
+ <body>
+   <!-- HEADER / NAV (Research folder) -->
+-  <header class="site-header">
+-    <div class="brand">
+-      <a href="index.html" class="brand-link">
+-        <span class="brand-main">Civic Engagement</span>
+-        <span class="brand-sub">Experiment &amp; Lab</span>
+-      </a>
+-    </div>
+-
+-    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+-      <span class="nav-toggle-bar"></span>
+-      <span class="nav-toggle-bar"></span>
+-    </button>
+-
+-    <nav class="main-nav" aria-label="Primary navigation">
+-      <ul>
+-        <li><a href="index.html">Research Home</a></li>
+-        <li><a href="research-overview.html">Research Overview</a></li>
+-        <li><a href="journal-memo.html">Journal Memo</a></li>
+-        <li><a href="dissertation.html">Dissertation</a></li>
+-        <li><a href="study-details.html">Study Details</a></li>
+-
+-        <!-- Prototype vs research split -->
+-        <li><a href="altius.html">ALTIUS Prototype</a></li>
+-        <li><a href="altius-dissertation.html" class="active">ALTIUS Dissertation</a></li>
+-
+-        <li><a href="../lab/">Lab</a></li>
+-        <li><a href="../index.html">Main Site</a></li>
+-
+-        <li>
+-          <a href="https://syndorzaldrizes.github.io/Syndor/" target="_blank" rel="noopener">
+-            MSL Site ↗
+-          </a>
+-        </li>
+-      </ul>
+-    </nav>
+-  </header>
++  <div data-include="header"></div>
+ 
+   <main>
+     <div class="article">
+       <header class="article-header">
+         <span class="eyebrow">ALTIUS · Dissertation-format research write-up</span>
+         <h1>ALTIUS: An Agency-First Task Engine Prototype for Civic + Academic Follow-Through</h1>
+ 
+         <div class="meta-grid">
+           <div>
+             <p class="article-meta">
+               Working research write-up · Nathan Sanchez · St. Mary’s College of Maryland · 2026 (draft track)
+             </p>
+             <p class="article-meta">
+               This document formalizes ALTIUS as a research object: the theory of change, design constraints,
+               milestones achieved, and an evaluation plan that can run in parallel with the dissertation-scale
+               campus engagement study.
+             </p>
+ 
+             <div style="display:flex; flex-wrap:wrap; gap:.5rem; margin-top:.75rem;">
+               <span class="pill">Prototype page: <a href="altius.html">altius.html</a></span>
+               <span class="pill">Method tie-in: <a href="study-details.html">study-details.html</a></span>
+               <span class="pill">Lab integration: <a href="../lab/">/lab/</a></span>
+             </div>
+           </div>
+ 
+@@ -558,80 +523,45 @@ TASK:
+ Ask me what I completed.
+ If I didn't do it, diagnose friction (time/clarity/anxiety/boredom/overwhelm).
+ Then:
+ - shrink the next step,
+ - time-box it,
+ - and have me commit to a single action I can finish now.</code></pre>
+ 
+           <h3>A4. Civic-safe mode (nonpartisan, action-forward)</h3>
+           <pre><code>CIVIC SAFE MODE
+ When the task is civic or political:
+ - stay nonpartisan,
+ - focus on democratic skills (participation, deliberation, outreach),
+ - prefer local/institutional actions (campus/community),
+ - and require me to choose the action.</code></pre>
+ 
+           <p class="footnote">
+             If you want, we can add an Appendix B with consent/debrief boilerplate specifically for IRB-style formatting.
+           </p>
+         </section>
+ 
+       </div>
+     </div>
+   </main>
+ 
+   <!-- FOOTER -->
+-  <footer class="site-footer">
+-    <div class="footer-main">
+-      <div class="footer-about">
+-        <h3>About the lab</h3>
+-        <p>
+-          The Civic Engagement Experiment &amp; Lab connects democratic theory, youth engagement,
+-          and real-world practice through research and prototypes—including ALTIUS as an agency-first task engine.
+-        </p>
+-        <a href="../lab/">Lab →</a>
+-      </div>
+-
+-      <div class="footer-links">
+-        <h3>Quick links</h3>
+-        <ul>
+-          <li><a href="altius.html">ALTIUS prototype</a></li>
+-          <li><a href="study-details.html">Study details</a></li>
+-          <li><a href="dissertation.html">Main dissertation draft</a></li>
+-        </ul>
+-      </div>
+-
+-      <div class="footer-links">
+-        <h3>Partners</h3>
+-        <ul>
+-          <li>
+-            <a href="https://syndorzaldrizes.github.io/Syndor/" target="_blank" rel="noopener">
+-              Maryland Student Legislature @ SMCM ↗
+-            </a>
+-          </li>
+-        </ul>
+-      </div>
+-    </div>
+-
+-    <div class="footer-bottom">
+-      <p>© <span id="year"></span> Civic Engagement Experiment &amp; Lab.</p>
+-    </div>
+-  </footer>
++  <div data-include="footer"></div>
+ 
+   <!-- JS: NAV TOGGLE + YEAR -->
+   <script>
+     const navToggle = document.querySelector('.nav-toggle');
+     const mainNav = document.querySelector('.main-nav');
+ 
+     if (navToggle && mainNav) {
+       navToggle.addEventListener('click', () => {
+         const isOpen = mainNav.classList.toggle('nav-open');
+         navToggle.classList.toggle('nav-open');
+         navToggle.setAttribute('aria-expanded', String(isOpen));
+       });
+     }
+ 
+     const yearSpan = document.getElementById('year');
+     if (yearSpan) yearSpan.textContent = new Date().getFullYear();
+   </script>
+ </body>
+ </html>
+diff --git a/pages/research/dissertation.html b/pages/research/dissertation.html
+index 0d1e061cee176564eb1a401e6a9598235be6d998..f7074a3febfd9bcd4e51967113c9a797aec46131 100644
+--- a/pages/research/dissertation.html
++++ b/pages/research/dissertation.html
+@@ -58,51 +58,51 @@
+     .doc article h2 { scroll-margin-top: 96px; }
+     .doc .meta {
+       color: rgba(238,240,255,0.78);
+       margin: 10px 0 0;
+     }
+     .doc blockquote {
+       border-left: 3px solid rgba(245,197,66,0.75);
+       padding-left: 12px;
+       margin: 12px 0;
+       color: rgba(238,240,255,0.86);
+     }
+     .doc ul, .doc ol { padding-left: 20px; }
+     .doc li { margin: 6px 0; }
+ 
+     .note-card { padding: 16px; }
+     .note-card p { margin: 0; color: rgba(238,240,255,0.80); }
+ 
+     .actions-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+   </style>
+ </head>
+ 
+ <body class="theme-galaxy">
+   <!-- Shared header injected by site.js -->
+   <div data-include="header"></div>
+ 
+-  <main id="top">
++  <main id="main">
+     <section class="hero page-hero">
+       <div class="wrap">
+         <p class="kicker">Research · dissertation-scale thread</p>
+         <h1>Civic Organizations, Cross-Pressured Students, and the Campus as a Laboratory of Democracy</h1>
+         <p class="lead">
+           Working dissertation project: theory + campus pilot experiment + scaling paths.
+         </p>
+ 
+         <p class="crumbs">
+           <a href="../../index.html">Home</a> / <a href="./">Research</a> / Dissertation
+         </p>
+ 
+         <div class="actions-row">
+           <a class="btn primary" href="./">Back to Research Hub</a>
+           <a class="btn" href="../lab/">Civic Lab</a>
+           <a class="btn" href="../altius/">ALTIUS</a>
+           <a class="btn" href="../../about/references.html">References</a>
+         </div>
+ 
+         <p class="meta">
+           Working draft · Nathan Sanchez · St. Mary’s College of Maryland · 2026 (target)
+         </p>
+       </div>
+     </section>
+ 
+diff --git a/pages/research/index.html b/pages/research/index.html
+index eeede09b77c141fe21dd3704ad5d319845e0ba51..613fb60cdc0f668b62239ee6d4f21cd99094d8c0 100644
+--- a/pages/research/index.html
++++ b/pages/research/index.html
+@@ -45,51 +45,51 @@
+       border: 1px solid rgba(160,164,184,0.22);
+       background: rgba(255,255,255,0.03);
+       margin: 10px 0;
+     }
+     .list a:hover {
+       border-color: rgba(245,197,66,0.55);
+       background: rgba(245,197,66,0.10);
+       color: rgba(255,221,107,0.98);
+     }
+     .tag {
+       font-size: 0.78rem;
+       color: rgba(238,240,255,0.70);
+       white-space: nowrap;
+       align-self: flex-start;
+       padding-top: 2px;
+     }
+ 
+     .actions-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+   </style>
+ </head>
+ 
+ <body class="theme-galaxy">
+   <!-- Shared header injected by site.js -->
+   <div data-include="header"></div>
+ 
+-  <main id="top">
++  <main id="main">
+     <section class="hero page-hero">
+       <div class="wrap">
+         <p class="kicker">Research hub</p>
+         <h1>Research</h1>
+         <p class="lead">
+           Dissertation-scale thread, memos, study design, and instruments. This is the academic spine of The Reverie.
+         </p>
+ 
+         <p class="crumbs">
+           <a href="../../index.html">Home</a> / Research
+         </p>
+ 
+         <div class="actions-row" aria-label="Primary research actions">
+           <a class="btn primary" href="dissertation.html">Dissertation page</a>
+           <a class="btn" href="journal-memo.html">Journal memo</a>
+           <a class="btn" href="../lab/">Civic Lab</a>
+           <a class="btn" href="../altius/">ALTIUS</a>
+           <a class="btn" href="../../about/references.html">References</a>
+         </div>
+       </div>
+     </section>
+ 
+     <section class="section">
+       <div class="wrap hub-grid">
+         <!-- Left: Primary cards -->
+diff --git a/pages/research/journal-memo.html b/pages/research/journal-memo.html
+index 268c057142cfd06542e81c195f28c74cdb4540d9..282a71bfad0dffec6c083ea04ca2ea828af4156d 100644
+--- a/pages/research/journal-memo.html
++++ b/pages/research/journal-memo.html
+@@ -62,51 +62,51 @@
+       margin: 10px 0 0;
+     }
+ 
+     .doc blockquote {
+       border-left: 3px solid rgba(245,197,66,0.75);
+       padding-left: 12px;
+       margin: 12px 0;
+       color: rgba(238,240,255,0.86);
+     }
+ 
+     .doc ul, .doc ol { padding-left: 20px; }
+     .doc li { margin: 6px 0; }
+ 
+     .note-card { padding: 16px; }
+     .note-card p { margin: 0; color: rgba(238,240,255,0.80); }
+ 
+     .actions-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+     .tiny { font-size: 0.92rem; color: rgba(238,240,255,0.76); }
+   </style>
+ </head>
+ 
+ <body class="theme-galaxy">
+   <!-- Shared header injected by site.js -->
+   <div data-include="header"></div>
+ 
+-  <main id="top">
++  <main id="main">
+     <section class="hero page-hero">
+       <div class="wrap">
+         <p class="kicker">Research · memo</p>
+         <h1>Journal Memo &amp; Research Proposal</h1>
+         <p class="lead">
+           Working memo outlining a research proposal on democratic erosion, civic learning, and civic engagement,
+           with a focus on youth and campus-based experiments.
+         </p>
+ 
+         <p class="crumbs">
+           <a href="../../index.html">Home</a> / <a href="./">Research</a> / Journal Memo
+         </p>
+ 
+         <div class="actions-row">
+           <a class="btn primary" href="./">Back to Research Hub</a>
+           <a class="btn" href="../lab/">Civic Lab</a>
+           <a class="btn" href="../altius/">ALTIUS</a>
+           <a class="btn" href="../../about/references.html">References</a>
+         </div>
+ 
+         <p class="meta">
+           Working memo · drafted for academic development and future dissertation scaling
+         </p>
+       </div>
+     </section>
+diff --git a/pages/research/questionnaires.html b/pages/research/questionnaires.html
+index 430a90f511450c835ec15d0b18db2a35ad8ccbfb..f760c857b3ca7b7f1b192ccacce618f1c8922529 100644
+--- a/pages/research/questionnaires.html
++++ b/pages/research/questionnaires.html
+@@ -1,74 +1,41 @@
+ <!-- questionnaires.html – Questionnaires & survey instruments hub -->
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+   <meta charset="UTF-8" />
+   <title>Questionnaires – Civic Engagement Experiment &amp; Lab</title>
+   <meta name="viewport" content="width=device-width, initial-scale=1" />
+   <meta
+     name="description"
+     content="Survey instruments, templates, and participation links for the Civic Engagement Experiment’s campus democratic engagement study."
+   />
+   <link rel="stylesheet" href="styles.css" />
+ </head>
+ <body>
+   <!-- HEADER / NAV -->
+-  <header class="site-header">
+-    <div class="brand">
+-      <a href="index.html" class="brand-link">
+-        <span class="brand-main">Civic Engagement</span>
+-        <span class="brand-sub">Experiment &amp; Lab</span>
+-      </a>
+-    </div>
+-
+-    <button class="nav-toggle" aria-label="Toggle navigation">
+-      <span class="nav-toggle-bar"></span>
+-      <span class="nav-toggle-bar"></span>
+-    </button>
+-
+-    <nav class="main-nav" aria-label="Primary navigation">
+-      <ul>
+-        <li><a href="index.html">Home</a></li>
+-        <li><a href="journal-memo.html">Journal Memo</a></li>
+-        <li><a href="dissertation.html">Dissertation</a></li>
+-        <li><a href="civicengagementproject.html">Civic Engagement Project</a></li>
+-        <li><a href="study-details.html">Study Details</a></li>
+-        <li><a href="questionnaires.html" class="active">Questionnaires</a></li>
+-        <li><a href="civic-lab.html">Civic Lab</a></li>
+-        <li><a href="altius.html">ALTIUS Prototype</a></li>
+-        <li><a href="venture-overview.html">Venture</a></li>
+-        <li><a href="notes.html">Notes &amp; Sandbox</a></li>
+-        <li><a href="references.html">References</a></li>
+-        <li>
+-          <a href="https://syndorzaldrizes.github.io/Syndor/" target="_blank" rel="noopener">
+-            MSL Site ↗
+-          </a>
+-        </li>
+-      </ul>
+-    </nav>
+-  </header>
++  <div data-include="header"></div>
+ 
+   <main>
+     <div class="article">
+       <header class="article-header">
+         <span class="eyebrow">Instruments &amp; Templates</span>
+         <h1>Questionnaires &amp; Surveys</h1>
+         <p class="article-meta">
+           This page collects the survey instruments used in the Civic Engagement Experiment’s
+           campus study: student questionnaires, faculty surveys, and reusable design templates.
+         </p>
+         <p class="article-meta small">
+           <strong>Status:</strong> Draft → Pilot-testing → IRB-ready deployment (when applicable). ·
+           <strong>Last updated:</strong> Dec 2025
+         </p>
+       </header>
+ 
+       <div class="article-content">
+         <!-- PARTICIPATION OVERVIEW -->
+         <section>
+           <h2>How These Questionnaires Fit into the Study</h2>
+           <p>
+             The Civic Engagement Experiment is built around a campus-level study of democratic
+             engagement. The questionnaires here are the tools that make the study possible. They:
+           </p>
+           <ul>
+@@ -266,81 +233,46 @@
+               Any live survey associated with this project will include a clear consent statement
+               at the beginning. Participation is voluntary, and responses are kept confidential or
+               anonymized according to whatever the approved protocol requires.
+             </p>
+             <p>In brief:</p>
+             <ul>
+               <li>No grades or evaluations are tied to participation.</li>
+               <li>Identifiable information (if collected) is stored separately from survey data.</li>
+               <li>
+                 Aggregate results may be used in academic work, presentations, or reports without
+                 naming individual participants.
+               </li>
+             </ul>
+             <p class="small">
+               For full details on ethics and data protection, see the
+               <a href="study-details.html">Ethics, Consent &amp; Data Protection</a> section on the
+               Study Details page.
+             </p>
+           </div>
+         </section>
+       </div>
+     </div>
+   </main>
+ 
+   <!-- FOOTER -->
+-  <footer class="site-footer">
+-    <div class="footer-main">
+-      <div class="footer-about">
+-        <h3>About the lab</h3>
+-        <p>
+-          The Civic Engagement Experiment &amp; Lab is run by a student who splits time
+-          between campaigns, the Maryland General Assembly ecosystem, and campus organizing—
+-          trying to connect democratic theory, youth engagement, and real-world practice.
+-        </p>
+-      </div>
+-
+-      <div class="footer-links">
+-        <h3>Quick links</h3>
+-        <ul>
+-          <li><a href="civic-lab.html">Civic Lab services</a></li>
+-          <li><a href="civicengagementproject.html">Youth civic project</a></li>
+-          <li><a href="references.html">References &amp; sources</a></li>
+-        </ul>
+-      </div>
+-
+-      <div class="footer-links">
+-        <h3>Partners</h3>
+-        <ul>
+-          <li>
+-            <a href="https://syndorzaldrizes.github.io/Syndor/" target="_blank" rel="noopener">
+-              Maryland Student Legislature @ SMCM ↗
+-            </a>
+-          </li>
+-        </ul>
+-      </div>
+-    </div>
+-
+-    <div class="footer-bottom">
+-      <p>© <span id="year"></span> Civic Engagement Experiment &amp; Lab.</p>
+-    </div>
+-  </footer>
++  <div data-include="footer"></div>
+ 
+   <!-- SIMPLE JS: NAV TOGGLE + YEAR -->
+   <script>
+     const navToggle = document.querySelector('.nav-toggle');
+     const mainNav = document.querySelector('.main-nav');
+ 
+     if (navToggle && mainNav) {
+       navToggle.addEventListener('click', () => {
+         mainNav.classList.toggle('nav-open');
+         navToggle.classList.toggle('nav-open');
+       });
+     }
+ 
+     const yearSpan = document.getElementById('year');
+     if (yearSpan) {
+       yearSpan.textContent = new Date().getFullYear();
+     }
+   </script>
+ </body>
+ </html>
+diff --git a/pages/research/research-overview.html b/pages/research/research-overview.html
+index 390d37ebc5b9a990927f857a7165a92a5aeb0d33..d7561e119873e9deeec0e012db1abf1843749616 100644
+--- a/pages/research/research-overview.html
++++ b/pages/research/research-overview.html
+@@ -1,74 +1,41 @@
+ <!-- civicengagementproject.html – Youth civic hub for the Civic Engagement Experiment & Lab -->
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+   <meta charset="UTF-8" />
+   <title>Research Overview – Civic Engagement Experiment &amp; Lab</title>
+   <meta name="viewport" content="width=device-width, initial-scale=1" />
+   <meta
+     name="description"
+     content="Youth-focused civic learning hub and research overview with explainers, missions, and activities for future delegates and the adults who support them."
+   />
+   <link rel="stylesheet" href="styles.css" />
+ </head>
+ <body>
+   <!-- HEADER / NAV -->
+-  <header class="site-header">
+-    <div class="brand">
+-      <a href="index.html" class="brand-link">
+-        <span class="brand-main">Civic Engagement</span>
+-        <span class="brand-sub">Experiment &amp; Lab</span>
+-      </a>
+-    </div>
+-
+-    <button class="nav-toggle" aria-label="Toggle navigation">
+-      <span class="nav-toggle-bar"></span>
+-      <span class="nav-toggle-bar"></span>
+-    </button>
+-
+-    <nav class="main-nav" aria-label="Primary navigation">
+-      <ul>
+-        <li><a href="index.html">Home</a></li>
+-        <li><a href="journal-memo.html">Journal Memo</a></li>
+-        <li><a href="dissertation.html">Dissertation</a></li>
+-        <li><a href="civicengagementproject.html" class="active">Research Overview</a></li>
+-        <li><a href="study-details.html">Study Details</a></li>
+-        <li><a href="questionnaires.html">Questionnaires</a></li>
+-        <li><a href="civic-lab.html">Civic Lab</a></li>
+-        <li><a href="altius.html">ALTIUS Prototype</a></li>
+-        <li><a href="venture-overview.html">Venture</a></li>
+-        <li><a href="notes.html">Notes &amp; Sandbox</a></li>
+-        <li><a href="references.html">References</a></li>
+-        <li>
+-          <a href="https://syndorzaldrizes.github.io/Syndor/" target="_blank" rel="noopener">
+-            MSL Site ↗
+-          </a>
+-        </li>
+-      </ul>
+-    </nav>
+-  </header>
++  <div data-include="header"></div>
+ 
+   <main>
+     <div class="article">
+       <header class="article-header">
+         <span class="eyebrow">Neophytus · Youth Civic Hub</span>
+         <h1>Research Overview (Youth Civic Hub)</h1>
+         <p class="article-meta">
+           A launchpad for future delegates, curious siblings, teachers, and anyone who wants to
+           understand how power actually works—and how to use it for something better than just the show.
+         </p>
+       </header>
+ 
+       <div class="article-content">
+         <!-- OVERVIEW / WAYFINDING -->
+         <section>
+           <h2>Start Here: What This Hub Is</h2>
+           <div class="card">
+             <p>
+               This page is the “front door” for the youth-facing side of the Civic Engagement
+               Experiment &amp; Lab—designed to make civic learning usable without making it partisan.
+               It’s also a research-adjacent resource: these activities are shaped to be measurable,
+               replicable, and scalable across classrooms and campuses.
+             </p>
+             <ul>
+               <li><strong>If you want the study design:</strong> go to <a href="study-details.html">Study Details</a>.</li>
+@@ -255,81 +222,46 @@
+               This youth hub isn’t just a resource; it’s also part of a larger experiment. The lab
+               is trying to answer questions like:
+             </p>
+             <ul>
+               <li>Which activities build confidence and civic efficacy?</li>
+               <li>How do messages land with students who feel “out of place” politically?</li>
+               <li>Can small, local experiences push back against big, abstract democratic erosion?</li>
+             </ul>
+             <p>If you’re interested in testing these ideas on a campus or in a classroom:</p>
+             <ul>
+               <li><a href="study-details.html">Study Details &amp; methods</a></li>
+               <li><a href="questionnaires.html">Questionnaires &amp; templates</a></li>
+               <li><a href="civic-lab.html">Civic Lab services &amp; collaborations</a></li>
+             </ul>
+             <p class="small">
+               Any real-world use should follow ethical guidelines: informed consent for surveys,
+               respect for students’ privacy, and transparency about what’s being measured and why.
+             </p>
+           </div>
+         </section>
+       </div>
+     </div>
+   </main>
+ 
+   <!-- FOOTER -->
+-  <footer class="site-footer">
+-    <div class="footer-main">
+-      <div class="footer-about">
+-        <h3>About the lab</h3>
+-        <p>
+-          The Civic Engagement Experiment &amp; Lab is run by a student who splits time
+-          between campaigns, the Maryland General Assembly ecosystem, and campus organizing—
+-          trying to connect democratic theory, youth engagement, and real-world practice.
+-        </p>
+-      </div>
+-
+-      <div class="footer-links">
+-        <h3>Quick links</h3>
+-        <ul>
+-          <li><a href="civic-lab.html">Civic Lab services</a></li>
+-          <li><a href="civicengagementproject.html">Youth civic project</a></li>
+-          <li><a href="references.html">References &amp; sources</a></li>
+-        </ul>
+-      </div>
+-
+-      <div class="footer-links">
+-        <h3>Partners</h3>
+-        <ul>
+-          <li>
+-            <a href="https://syndorzaldrizes.github.io/Syndor/" target="_blank" rel="noopener">
+-              Maryland Student Legislature @ SMCM ↗
+-            </a>
+-          </li>
+-        </ul>
+-      </div>
+-    </div>
+-
+-    <div class="footer-bottom">
+-      <p>© <span id="year"></span> Civic Engagement Experiment &amp; Lab.</p>
+-    </div>
+-  </footer>
++  <div data-include="footer"></div>
+ 
+   <!-- SIMPLE JS: NAV TOGGLE + YEAR -->
+   <script>
+     const navToggle = document.querySelector('.nav-toggle');
+     const mainNav = document.querySelector('.main-nav');
+ 
+     if (navToggle && mainNav) {
+       navToggle.addEventListener('click', () => {
+         mainNav.classList.toggle('nav-open');
+         navToggle.classList.toggle('nav-open');
+       });
+     }
+ 
+     const yearSpan = document.getElementById('year');
+     if (yearSpan) {
+       yearSpan.textContent = new Date().getFullYear();
+     }
+   </script>
+ </body>
+ </html>
+diff --git a/pages/research/study-details.html b/pages/research/study-details.html
+index afe5635d7e1e465f91df30c86cf2077fed86e093..51f5b9921783cf5ef04bc453958c7398e59f44e7 100644
+--- a/pages/research/study-details.html
++++ b/pages/research/study-details.html
+@@ -48,90 +48,51 @@
+     .tab-button.active {
+       opacity: 1;
+       background: rgba(255, 255, 255, 0.08);
+       backdrop-filter: blur(6px);
+     }
+ 
+     .tab-section {
+       display: none;
+       margin-top: 1rem;
+     }
+ 
+     .tab-section.active {
+       display: block;
+     }
+ 
+     .tab-note {
+       font-size: 0.85rem;
+       opacity: 0.8;
+       margin-bottom: 0.75rem;
+     }
+   </style>
+ </head>
+ 
+ <body>
+   <!-- HEADER / NAV -->
+-  <header class="site-header">
+-    <div class="brand">
+-      <!-- Research hub home (research/index.html) -->
+-      <a href="index.html" class="brand-link">
+-        <span class="brand-main">Civic Engagement</span>
+-        <span class="brand-sub">Experiment &amp; Lab</span>
+-      </a>
+-    </div>
+-
+-    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+-      <span class="nav-toggle-bar"></span>
+-      <span class="nav-toggle-bar"></span>
+-    </button>
+-
+-    <nav class="main-nav" aria-label="Primary navigation">
+-      <ul>
+-        <!-- Research folder -->
+-        <li><a href="index.html">Research Home</a></li>
+-        <li><a href="research-overview.html">Research Overview</a></li>
+-        <li><a href="journal-memo.html">Journal Memo</a></li>
+-        <li><a href="dissertation.html">Dissertation</a></li>
+-        <li><a href="study-details.html" class="active">Study Details</a></li>
+-        <li><a href="questionnaires.html">Questionnaires</a></li>
+-
+-        <!-- Prototypes / related -->
+-        <li><a href="altius.html">ALTIUS Prototype</a></li>
+-
+-        <!-- Outside Research folder -->
+-        <li><a href="../lab/">Lab</a></li>
+-        <li><a href="../index.html">Main Site</a></li>
+-
+-        <!-- External -->
+-        <li>
+-          <a href="https://syndorzaldrizes.github.io/Syndor/" target="_blank" rel="noopener">
+-            MSL Site ↗
+-          </a>
+-        </li>
+-      </ul>
+-    </nav>
+-  </header>
++  <div data-include="header"></div>
+ 
+   <main>
+     <div class="article">
+       <header class="article-header">
+         <span class="eyebrow">Methodology · Campus Democratic Engagement Study</span>
+         <h1>Study Details &amp; Research Design</h1>
+         <p class="article-meta">
+           This page documents the core design of the Civic Engagement Experiment’s campus study
+           and related prototypes. Use the tabs below to switch between the main campus
+           survey-experiment and the ALTIUS task-engine substudy.
+         </p>
+       </header>
+ 
+       <div class="article-content">
+         <!-- TAB CONTROLS -->
+         <div class="tab-controls" role="tablist" aria-label="Study sections">
+           <button
+             id="tab-btn-campus"
+             class="tab-button active"
+             data-tab-target="campus"
+             role="tab"
+             aria-selected="true"
+             aria-controls="tab-panel-campus"
+           >
+             Campus Democratic Engagement Study
+@@ -405,88 +366,51 @@
+           <section>
+             <h2>Interaction Pattern &amp; Task Engine Logic</h2>
+             <ol>
+               <li><strong>Clarify:</strong> name the avoided task.</li>
+               <li><strong>Decompose:</strong> break into atomic steps.</li>
+               <li><strong>Anchor:</strong> choose the smallest non-zero action.</li>
+               <li><strong>Execute &amp; Reflect:</strong> do it, report back, adapt.</li>
+             </ol>
+           </section>
+ 
+           <section>
+             <h2>Data, Ethics, &amp; Guardrails</h2>
+             <ul>
+               <li><strong>Agency-first:</strong> no partisan pushing; no decision-making for users.</li>
+               <li><strong>Data minimization:</strong> future research use relies on anonymized aggregates.</li>
+               <li><strong>Transparency:</strong> clear consent framing; easy opt-out.</li>
+               <li><strong>Non-therapeutic scope:</strong> not a mental health tool; refer out when needed.</li>
+             </ul>
+           </section>
+         </section>
+       </div>
+     </div>
+   </main>
+ 
+   <!-- FOOTER -->
+-  <footer class="site-footer">
+-    <div class="footer-main">
+-      <div class="footer-about">
+-        <h3>About the lab</h3>
+-        <p>
+-          The Civic Engagement Experiment &amp; Lab is run by a student who splits time
+-          between campaigns, the Maryland General Assembly ecosystem, and campus organizing—
+-          trying to connect democratic theory, youth engagement, and real-world practice.
+-        </p>
+-        <!-- Team & Contact page deleted: point somewhere that exists -->
+-        <a href="../lab/">Lab →</a>
+-      </div>
+-
+-      <div class="footer-links">
+-        <h3>Quick links</h3>
+-        <ul>
+-          <li><a href="dissertation.html">Dissertation draft</a></li>
+-          <li><a href="questionnaires.html">Questionnaires</a></li>
+-          <li><a href="references.html">References &amp; sources</a></li>
+-        </ul>
+-      </div>
+-
+-      <div class="footer-links">
+-        <h3>Partners</h3>
+-        <ul>
+-          <li>
+-            <a href="https://syndorzaldrizes.github.io/Syndor/" target="_blank" rel="noopener">
+-              Maryland Student Legislature @ SMCM ↗
+-            </a>
+-          </li>
+-        </ul>
+-      </div>
+-    </div>
+-
+-    <div class="footer-bottom">
+-      <p>© <span id="year"></span> Civic Engagement Experiment &amp; Lab.</p>
+-    </div>
+-  </footer>
++  <div data-include="footer"></div>
+ 
+   <!-- JS: NAV TOGGLE + YEAR + TABS -->
+   <script>
+     const navToggle = document.querySelector('.nav-toggle');
+     const mainNav = document.querySelector('.main-nav');
+ 
+     if (navToggle && mainNav) {
+       navToggle.addEventListener('click', () => {
+         const isOpen = mainNav.classList.toggle('nav-open');
+         navToggle.classList.toggle('nav-open');
+         navToggle.setAttribute('aria-expanded', String(isOpen));
+       });
+     }
+ 
+     const yearSpan = document.getElementById('year');
+     if (yearSpan) yearSpan.textContent = new Date().getFullYear();
+ 
+     // Tab logic (click + basic keyboard support)
+     const tabButtons = Array.from(document.querySelectorAll('.tab-button'));
+     const tabPanels = Array.from(document.querySelectorAll('.tab-section'));
+ 
+     function activateTab(targetName) {
+       tabButtons.forEach((b) => {
+         const active = b.getAttribute('data-tab-target') === targetName;
+         b.classList.toggle('active', active);
+diff --git a/pages/venture/index.html b/pages/venture/index.html
+index 82c2071efffd7ef85f8f980214084be73bf16781..3b3f93c179ca79670ae97bf524de0605242d1ee0 100644
+--- a/pages/venture/index.html
++++ b/pages/venture/index.html
+@@ -75,51 +75,51 @@
+     .actions-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+ 
+     .mini { font-size: 0.92rem; line-height: 1.55; }
+     .callout {
+       border-radius: 14px;
+       border: 1px solid rgba(245,197,66,0.22);
+       background: rgba(245,197,66,0.08);
+       padding: 12px 14px;
+       margin-top: 10px;
+     }
+ 
+     .danger-note {
+       border-radius: 14px;
+       border: 1px solid rgba(255, 77, 77, 0.25);
+       background: rgba(255, 77, 77, 0.06);
+       padding: 12px 14px;
+       margin-top: 12px;
+     }
+   </style>
+ </head>
+ 
+ <body class="theme-galaxy">
+   <!-- Shared header injected by site.js -->
+   <div data-include="header"></div>
+ 
+-  <main id="top">
++  <main id="main">
+     <section class="hero page-hero">
+       <div class="wrap">
+         <p class="kicker">Venture thread</p>
+         <h1>Venture</h1>
+         <p class="lead">
+           A practical, WIP build: tools and services that help people move from civic concern → civic action,
+           without turning politics into a dopamine casino.
+         </p>
+ 
+         <p class="crumbs">
+           <a href="../../index.html">Home</a> / Venture
+         </p>
+ 
+         <div class="actions-row">
+           <a class="btn primary" href="venture-overview.html">Overview</a>
+           <a class="btn" href="../research/">Research</a>
+           <a class="btn" href="../lab/">Civic Lab</a>
+           <a class="btn" href="../altius/">ALTIUS</a>
+         </div>
+ 
+         <div class="pill-row">
+           <span class="pill"><strong>Mode:</strong> Prototype</span>
+           <span class="pill"><strong>Focus:</strong> Civic + agency tooling</span>
+           <span class="pill"><strong>Constraint:</strong> Nonpartisan by design</span>
+         </div>
+diff --git a/pages/venture/market-research.html b/pages/venture/market-research.html
+index 049b677a259e322a9fca78216ef9b50ef50c6056..312e39ad48627a9b626ce5545fd5426bd4fd0009 100644
+--- a/pages/venture/market-research.html
++++ b/pages/venture/market-research.html
+@@ -77,51 +77,51 @@
+     }
+     th, td {
+       text-align: left;
+       padding: 10px 12px;
+       border-bottom: 1px solid rgba(160,164,184,0.18);
+       vertical-align: top;
+       color: rgba(238,240,255,0.86);
+       font-size: 0.95rem;
+       line-height: 1.45;
+     }
+     th {
+       color: rgba(255,221,107,0.95);
+       font-weight: 700;
+       letter-spacing: 0.02em;
+       background: rgba(245,197,66,0.06);
+     }
+     tr:last-child td { border-bottom: none; }
+     .small { font-size: 0.92rem; }
+   </style>
+ </head>
+ 
+ <body class="theme-galaxy">
+   <!-- Shared header injected by site.js -->
+   <div data-include="header"></div>
+ 
+-  <main id="top">
++  <main id="main">
+     <section class="hero page-hero">
+       <div class="wrap">
+         <p class="kicker">Venture track · research</p>
+         <h1>Market &amp; Research</h1>
+         <p class="lead">
+           Before we build “solutions,” we check whether anyone actually needs them—and why they aren’t already satisfied.
+           This page is the anti-delusion layer: user segments, friction patterns, and the competitor map.
+         </p>
+ 
+         <p class="crumbs">
+           <a href="../../index.html">Home</a> / <a href="venture-overview.html">Venture</a> / Market &amp; Research
+         </p>
+ 
+         <div class="actions-row">
+           <a class="btn" href="venture-overview.html">Venture overview</a>
+           <a class="btn primary" href="market-research.html">Market &amp; research</a>
+           <a class="btn" href="product-prototype.html">Product prototype</a>
+           <a class="btn" href="../research/">Research hub</a>
+         </div>
+ 
+         <div class="pill-row">
+           <span class="pill"><strong>Bias:</strong> reality</span>
+           <span class="pill"><strong>Goal:</strong> usable in minutes</span>
+           <span class="pill"><strong>Constraint:</strong> low-budget orgs</span>
+           <span class="pill"><strong>Rule:</strong> no civic cringe</span>
+diff --git a/pages/venture/product-prototype.html b/pages/venture/product-prototype.html
+index 90f406f627d411785d55335f0c4426d5107dc5ea..8d2d6fd87921f4cb5a5c2f3f4537f8b2d38de292 100644
+--- a/pages/venture/product-prototype.html
++++ b/pages/venture/product-prototype.html
+@@ -71,51 +71,51 @@
+       text-decoration: none;
+       color: rgba(238,240,255,0.88);
+       border: 1px solid rgba(160,164,184,0.22);
+       background: rgba(255,255,255,0.03);
+     }
+     .list a:hover {
+       border-color: rgba(245,197,66,0.55);
+       background: rgba(245,197,66,0.10);
+       color: rgba(255,221,107,0.98);
+     }
+     .tag {
+       font-size: 0.78rem;
+       color: rgba(238,240,255,0.70);
+       white-space: nowrap;
+       align-self: center;
+     }
+ 
+     .small { font-size: 0.92rem; }
+   </style>
+ </head>
+ 
+ <body class="theme-galaxy">
+   <!-- Shared header injected by site.js -->
+   <div data-include="header"></div>
+ 
+-  <main id="top">
++  <main id="main">
+     <section class="hero page-hero">
+       <div class="wrap">
+         <p class="kicker">Venture track · prototypes</p>
+         <h1>Product Prototypes</h1>
+         <p class="lead">
+           The Reverie isn’t just a think-piece — it’s a workshop. These are messy, opinionated prototypes
+           designed to reveal what works (and what breaks) when real people try to govern, meet, decide,
+           and follow through.
+         </p>
+ 
+         <p class="crumbs">
+           <a href="../../index.html">Home</a> / <a href="venture-overview.html">Venture</a> / Product Prototypes
+         </p>
+ 
+         <div class="actions-row">
+           <a class="btn" href="venture-overview.html">Venture overview</a>
+           <a class="btn primary" href="product-prototype.html">Product prototypes</a>
+           <a class="btn" href="market-research.html">Market &amp; research</a>
+           <a class="btn" href="../lab/">Civic Lab</a>
+           <a class="btn" href="../altius/">ALTIUS</a>
+         </div>
+ 
+         <div class="pill-row">
+           <span class="pill"><strong>Bias:</strong> usable</span>
+           <span class="pill"><strong>Rule:</strong> no bloat</span>
+diff --git a/partials/header.html b/partials/header.html
+index 29b1aa5ee4569e31d4fc18fb829d424f03d1e992..f5877a2bfce0ed32449a9cb82d46b7308c642910 100644
+--- a/partials/header.html
++++ b/partials/header.html
+@@ -1,28 +1,30 @@
++<a class="skip-link" href="#main">Skip to content</a>
+ <header class="site-header">
+-  <div class="container nav-row">
+-    <a class="brand-link" href="/index.html">
+-      <span class="brand-main">The Reverie</span>
+-      <span class="brand-sub">Research + Civic Lab</span>
++  <div class="header-inner">
++    <a class="brand-link" data-nav-path="/index.html">
++      <span class="brand-title">The Reverie</span>
++      <span class="brand-sub">Civic Research + Civic Lab</span>
+     </a>
+ 
+     <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" type="button">
+       <span class="nav-toggle-bar"></span>
+       <span class="nav-toggle-bar"></span>
+       <span class="nav-toggle-bar"></span>
+     </button>
+ 
+     <nav class="main-nav" aria-label="Primary navigation">
+       <ul>
+-        <li><a href="/index.html">Home</a></li>
+-        <li><a href="/pages/research/">Research</a></li>
+-        <li><a href="/pages/lab/">Civic Lab</a></li>
+-        <li><a href="/pages/altius/">ALTIUS</a></li>
+-        <li><a href="/pages/venture/">Venture</a></li>
+-        <li><a href="/pages/references/">References</a></li>
++        <li><a data-nav-path="/index.html">Home</a></li>
++        <li><a data-nav-path="/pages/research/">Research</a></li>
++        <li><a data-nav-path="/pages/lab/">Civic Lab</a></li>
++        <li><a data-nav-path="/pages/altius/">ALTIUS</a></li>
++        <li><a data-nav-path="/pages/venture/">Venture</a></li>
++        <li><a data-nav-path="/pages/about/">About</a></li>
++        <li><a data-nav-path="/pages/about/references.html">References</a></li>
+         <li>
+           <a href="https://syndorzaldrizes.github.io/Syndor/" target="_blank" rel="noopener">MSL ↗</a>
+         </li>
+       </ul>
+     </nav>
+   </div>
+ </header>
