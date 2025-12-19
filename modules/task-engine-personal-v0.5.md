@@ -147,7 +147,7 @@ Action is signal.
 
 The Personal Task Engine plugs into:
 
-- **identity-scheme.json** (values + mission)
+- **identity-schema.json** (values + mission)
 - **mission architecture v0.4** (priority hierarchy)
 - future modules (civic engine, emotional decompression, etc.)
 
