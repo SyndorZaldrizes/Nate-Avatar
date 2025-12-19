@@ -67,6 +67,31 @@ Future files may include:
 
 Each addition refines the avatar and reduces entropy between versions.
 
+Exports
+-------
+
+Use the export pipeline to generate a deterministic bundle for Syndor’s Altius backend.
+
+Build
+
+- `npm run export:build` → writes `dist/altius-pack.json` and `dist/altius-pack.zip`
+- `npm run export:verify` → checks required inputs and bundle keys
+- `npm run export:clean` → removes the `dist/` directory
+
+Bundle contents
+
+- `identity_schema`: parsed contents of `identity-schema.json`
+- `persona/`: all persona files flattened into the JSON bundle and zipped archive
+- `modules/`: module documentation and specifications
+- `safeguards/`: guardrails and safety policies
+- `PROMPTS/`: prompt assets for the persona
+- `architecture/` (optional): included if enabled in `exports/export-manifest.json`
+
+Consumption
+
+- The Altius backend expects `dist/altius-pack.json` as the canonical export.
+- File ordering in the bundle and zip is deterministic (alphabetical) so repeated builds produce identical structure given the same inputs.
+
 Philosophical Premise
 
 Humans are temporary.

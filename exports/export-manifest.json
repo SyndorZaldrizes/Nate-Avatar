@@ -1,0 +1,10 @@
+{
+  "paths": [
+    { "path": "persona", "type": "directory", "include": true },
+    { "path": "modules", "type": "directory", "include": true },
+    { "path": "safeguards", "type": "directory", "include": true },
+    { "path": "PROMPTS", "type": "directory", "include": true },
+    { "path": "architecture", "type": "directory", "include": false, "optional": true },
+    { "path": "identity-schema.json", "type": "file", "include": true }
+  ]
+}
