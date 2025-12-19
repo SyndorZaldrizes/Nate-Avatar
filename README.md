@@ -144,6 +144,15 @@ The universe does not reward passengers.
 
 Carry the fire.
 
+Local Usage vs. Static Assets
+- `index.html` (root) and `web/` assets run as static files; open locally or serve via any static file server.
+- The demo UI returns a mocked response by default. To connect a backend, wire `sendToModel()` to your endpoint (see inline comments for the relative `./api/altius` example).
+- No external services are required for the static experience.
+
+Import into Syndor
+- For moving this repo into `Syndor/altius/nate-avatar/`, follow `docs/EXPORT_TO_SYNDOR.md`.
+- Preserve directory structure and keep secrets/configs local-only.
+
 License
 
 No standard license applies.
